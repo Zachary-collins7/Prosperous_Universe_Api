@@ -4,6 +4,7 @@ Options for the Apex Console Driver.
 
 import logging
 from dataclasses import dataclass, field
+from typing import Union
 
 
 @dataclass
@@ -27,13 +28,7 @@ class Options:
     apex_password: str
     cookies: dict = field(default_factory=dict)
     use_headless: bool = False  # for playwriteAuth only
-    log_level: (
-        logging.DEBUG
-        | logging.INFO
-        | logging.WARNING
-        | logging.ERROR
-        | logging.CRITICAL
-    ) = logging.INFO
+    log_level: Union[int, str] = logging.INFO
     user_agent: str = (
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15"
         " (KHTML, like Gecko) Version/17.1 Safari/605.1.15"
