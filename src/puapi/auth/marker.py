@@ -1,5 +1,5 @@
 """
-This module defines the AuthMarker class which is used to check if a user is 
+This module defines the AuthMarker class which is used to check if a user is
 authorized to access the API.
 """
 
