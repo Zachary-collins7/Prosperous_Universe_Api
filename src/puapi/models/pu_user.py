@@ -1,3 +1,7 @@
+"""
+PUUser object to store user data
+"""
+
 import datetime
 
 
@@ -6,42 +10,42 @@ class PUUser:
     PUUser object to store user data
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         # from /api/sessions
-        self.session_id: str = None
-        self.session_token: str = None
-        self.session_created: datetime.datetime = None
-        self.session_expiry: datetime.datetime = None
-        self.session_last_activity: datetime.datetime = None
-        self.session_termination: datetime.datetime = None
-        self.session_account_disposable_id: str = None
+        self.session_id: str | None
+        self.session_token: str | None
+        self.session_created: datetime.datetime | None
+        self.session_expiry: datetime.datetime | None
+        self.session_last_activity: datetime.datetime | None
+        self.session_termination: datetime.datetime | None
+        self.session_account_disposable_id: str | None
 
-        self.account_id: str = None
-        self.display_name: str = None
-        self.email: str = None
-        self.preferred_language: str = None
-        self.registered: datetime.datetime = None
-        self.confirmed: datetime.datetime = None
-        self.confirmation_source: str = None
-        self.deleted: datetime.datetime = None
-        self.delete_reason: str = None
-        self.roles: list[str] = None
-        self.coupon: str = None
+        self.account_id: str | None
+        self.display_name: str | None
+        self.email: str | None
+        self.preferred_language: str | None
+        self.registered: datetime.datetime | None
+        self.confirmed: datetime.datetime | None
+        self.confirmation_source: str | None
+        self.deleted: datetime.datetime | None
+        self.delete_reason: str | None
+        self.roles: list[str] | None
+        self.coupon: str | None
 
         # from /api/users/{pu_id}
-        self.pu_id: str = None
-        self.user_disposable_id: str = None
-        self.early_access_support_tier: str = None
-        self.perks: list[str] = None
-        self.subscription_level: str = None
-        self.subscription_expiry: datetime.datetime = None
-        self.first_access_game_time_months_left: int = None
+        self.pu_id: str | None
+        self.user_disposable_id: str | None
+        self.early_access_support_tier: str | None
+        self.perks: list[str] | None
+        self.subscription_level: str | None
+        self.subscription_expiry: datetime.datetime | None
+        self.first_access_game_time_months_left: int | None
 
         # raw json data
-        self._session_response_data: dict = None
-        self._user_response_data: dict = None
+        self._session_response_data: dict | None
+        self._user_response_data: dict | None
 
-    def update_from_session_response(self, data: dict):
+    def update_from_session_response(self, data: dict) -> None:
         """
         updates the PUUser object with data from the /api/sessions response
         """
@@ -70,9 +74,10 @@ class PUUser:
 
         self._session_response_data = data
 
-    def update_from_user_response(self, data: dict):
+    def update_from_user_response(self, data: dict) -> None:
         """
-        updates the PUUser object with data from the /api/users/{pu_id} response
+        updates the PUUser object with data from
+        the /api/users/{pu_id} response
         """
         _dt = self.__convert_to_datetime
         self.pu_id = data["id"]
@@ -83,14 +88,16 @@ class PUUser:
         self.perks = data["perks"]
         self.subscription_level = data["subscription"]["level"]
         self.subscription_expiry = data["subscription"]["expiry"]
-        self.first_access_game_time_months_left = data["firstAccessGameTimeMonthsLeft"]
+        self.first_access_game_time_months_left = data[
+            "firstAccessGameTimeMonthsLeft"
+        ]
 
         self._user_response_data = data
 
-    def __convert_to_datetime(self, data: str) -> datetime.datetime:
+    def __convert_to_datetime(self, data: str) -> datetime.datetime | None:
         if data is None or data == "":
             return None
         return datetime.datetime.fromisoformat(data)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"PUUser({self.display_name} | {self.subscription_level})"

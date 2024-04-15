@@ -2,7 +2,7 @@
 Options for the Apex Console Driver.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import logging
 
 
@@ -19,11 +19,13 @@ class Options:
             multiple instances of the driver)
         use_headless (bool): Run the driver in headless mode (disable if
             you want to see the browser(s))
+        log_level (int): Set the log level for the driver
+        user_agent (str): Set the user agent for the driver
     """
 
     apex_email: str
     apex_password: str
-    cookies: dict = None
+    cookies: dict = field(default_factory=dict)
     use_headless: bool = False  # for playwriteAuth only
     log_level: (
         logging.DEBUG

@@ -1,3 +1,7 @@
+"""
+Decorators for the puapi package
+"""
+
 import time
 from functools import wraps
 from typing import Iterable, Callable
@@ -8,14 +12,14 @@ def retry_on_exception(
     retries: int = 3,
     retry_delay: int = 0,
     catch: Iterable = (Exception,),
-    on_error_callback: Callable[[Exception], None] = None,
+    on_error_callback: Callable[[Exception], None] | None = None,
 ):
     """
     decorator to retry a function on exception
 
     Example:
     ```
-    @retry_on_exception(retries=3, backoff=1, catch=(Exception,), on_error_callback=None)
+    @retry_on_exception(retries=3, backoff=1, catch=(Exception,))
     def my_function():
         pass
     ```
