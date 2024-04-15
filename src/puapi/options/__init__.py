@@ -2,8 +2,8 @@
 Options for the Apex Console Driver.
 """
 
-from dataclasses import dataclass, field
 import logging
+from dataclasses import dataclass, field
 
 
 @dataclass

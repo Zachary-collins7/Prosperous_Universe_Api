@@ -4,7 +4,7 @@ Decorators for the puapi package
 
 import time
 from functools import wraps
-from typing import Iterable, Callable
+from typing import Callable, Iterable
 
 
 def retry_on_exception(
