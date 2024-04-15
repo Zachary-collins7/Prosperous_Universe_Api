@@ -31,9 +31,38 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 79
+target-version = ['py37']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs    # exclude a directory named '.eggs'
+  | \.git     # exclude a directory named '.git'
+  | \.hg      # exclude a directory named '.hg'
+  | \.mypy_cache  # exclude a directory named '.mypy_cache'
+  | \.tox     # exclude a directory named '.tox'
+  | \.venv    # exclude a directory named '.venv'
+  | \.vscode  # exclude a directory named '.vscode'
+  | _build    # exclude any directory named '_build'
+  | buck-out  # exclude any directory named 'buck-out'
+  | build     # exclude any directory named 'build'
+  | dist      # exclude any directory named 'dist'
+  | venv      # exclude any directory named 'venv'
+)/
+'''
 
 [flake8]
 max-line-length = 79
+exclude =
+    .git,
+    .venv,
+    __pycache__,
+    .eggs,
+    *.egg,
+    .tox,
+    .vscode,
+    .mypy_cache,
+    .pytest_cache,
+    .github
 
 [tool.isort]
 line_length = 79
