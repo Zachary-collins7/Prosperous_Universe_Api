@@ -14,7 +14,7 @@ class Options:
     Args:
         apex_email (str): Email address for the Apex account
         apex_password (str): Password for the Apex account
-        use_chrome_profile (bool): Use your chrome save data to elliminate
+        use_chrome_profile (bool): Use your chrome save data to eliminate
             the need to login every time (disable if you are going to run
             multiple instances of the driver)
         use_headless (bool): Run the driver in headless mode (disable if
