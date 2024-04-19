@@ -2,7 +2,7 @@
 Prosperous Universe API
 """
 
-from puapi.options import Options
+from puapi._config import Options
 
 
 class ProsperousUniverseAPI:
