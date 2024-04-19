@@ -106,12 +106,16 @@ class ExternalApiAuthProvider(AuthProviderMarker):
                 self.cookies.append(cookie)
 
     def check_auth(self) -> bool:
-        return True
+        raise NotImplementedError("check_auth method not implemented")
 
     def get_user(self) -> PUUser:
-        return self.pu_user
+        if self.pu_user:
+            return self.pu_user
+        raise ValueError(
+            "PUUser object not found due to failed authentication"
+        )
 
-    def auth(self) -> PUUser:
+    def authenticate(self) -> bool:
         """
         authenticates user and updates PUUser object with data
         from /api/sessions and /api/users/{pu_id}
@@ -189,7 +193,7 @@ class ExternalApiAuthProvider(AuthProviderMarker):
 
         self.update_cookies(cookies)
 
-        return self.pu_user
+        return True
 
     def __get_api_session(self, email: str, password: str) -> dict[str, Any]:
         self._logger.debug("authenticating user %s", email)
@@ -240,7 +244,6 @@ class ExternalApiAuthProvider(AuthProviderMarker):
             stream=False,
         )
         res.raise_for_status()
-        print(res.cookies.get_dict().get("INGRESSCOOKIE"))
         return self._session.cookies.get_dict().get("INGRESSCOOKIE")
 
     def _get_sid(self) -> str:
