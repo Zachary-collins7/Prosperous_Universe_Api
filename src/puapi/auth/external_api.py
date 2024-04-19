@@ -1,6 +1,6 @@
 """
-This module contains the `ExternalApi` class which is used to authenticate
-users
+This module contains the `ExternalApiAuthProvider` class which is used to
+authenticate users
 """
 
 import datetime
@@ -12,20 +12,20 @@ from urllib.parse import urljoin
 import requests
 
 from puapi.auth.crypto import time_signature
-from puapi.auth.marker import AuthMarker
+from puapi.auth.marker import AuthProviderMarker
 from puapi.models.pu_user import PUUser
 from puapi.util.decorators import retry_on_exception
 from puapi.util.url_helpers import encode_url_params
 
 
-class ExternalApi(AuthMarker):
+class ExternalApiAuthProvider(AuthProviderMarker):
     """
-    ExternalApi class to authenticate user and get user data using the
-    Prosperous Universe Internal API
+    ExternalApiAuthProvider class to authenticate user and get user data using
+    the Prosperous Universe Internal API
 
     Example:
     ```python
-    api = ExternalApi(email, password)
+    api = ExternalApiAuthProvider(email, password)
     user = api.login()
     cookies = api.cookies
     still_logged_in = api.check_auth()
@@ -117,7 +117,7 @@ class ExternalApi(AuthMarker):
         from /api/sessions and /api/users/{pu_id}
 
         ```python
-        api = ExternalApi(email, password)
+        api = ExternalApiAuthProvider(email, password)
         user = api.auth()
         ```
 
