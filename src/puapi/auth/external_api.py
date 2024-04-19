@@ -1,6 +1,6 @@
 """
-This module contains the `ExternalApi` class which is used to authenticate
-users
+This module contains the `ExternalApiAuthProvider` class which is used to
+authenticate users
 """
 
 import datetime
@@ -12,20 +12,20 @@ from urllib.parse import urljoin
 import requests
 
 from puapi.auth.crypto import time_signature
-from puapi.auth.marker import AuthMarker
+from puapi.auth.marker import AuthProviderMarker
 from puapi.models.pu_user import PUUser
 from puapi.util.decorators import retry_on_exception
 from puapi.util.url_helpers import encode_url_params
 
 
-class ExternalApi(AuthMarker):
+class ExternalApiAuthProvider(AuthProviderMarker):
     """
-    ExternalApi class to authenticate user and get user data using the
-    Prosperous Universe Internal API
+    ExternalApiAuthProvider class to authenticate user and get user data using
+    the Prosperous Universe Internal API
 
     Example:
     ```python
-    api = ExternalApi(email, password)
+    api = ExternalApiAuthProvider(email, password)
     user = api.login()
     cookies = api.cookies
     still_logged_in = api.check_auth()
@@ -106,18 +106,22 @@ class ExternalApi(AuthMarker):
                 self.cookies.append(cookie)
 
     def check_auth(self) -> bool:
-        return True
+        raise NotImplementedError("check_auth method not implemented")
 
     def get_user(self) -> PUUser:
-        return self.pu_user
+        if self.pu_user:
+            return self.pu_user
+        raise ValueError(
+            "PUUser object not found due to failed authentication"
+        )
 
-    def auth(self) -> PUUser:
+    def authenticate(self) -> bool:
         """
         authenticates user and updates PUUser object with data
         from /api/sessions and /api/users/{pu_id}
 
         ```python
-        api = ExternalApi(email, password)
+        api = ExternalApiAuthProvider(email, password)
         user = api.auth()
         ```
 
@@ -189,7 +193,7 @@ class ExternalApi(AuthMarker):
 
         self.update_cookies(cookies)
 
-        return self.pu_user
+        return True
 
     def __get_api_session(self, email: str, password: str) -> dict[str, Any]:
         self._logger.debug("authenticating user %s", email)
@@ -240,7 +244,6 @@ class ExternalApi(AuthMarker):
             stream=False,
         )
         res.raise_for_status()
-        print(res.cookies.get_dict().get("INGRESSCOOKIE"))
         return self._session.cookies.get_dict().get("INGRESSCOOKIE")
 
     def _get_sid(self) -> str:
